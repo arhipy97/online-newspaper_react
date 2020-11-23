@@ -50,7 +50,7 @@ export default class Comments extends Component {
 
     renderItems(arr) {
         return arr.map((item) => {
-            return <View item={item} />
+            return <View key={Math.random() * 1000} item={item} />
         });
     }
 
@@ -71,9 +71,9 @@ export default class Comments extends Component {
 }
 
 const View = (props) => {
-    const { id, name, body, email } = props.item
+    const { name, body, email } = props.item
     return (
-        <div key={Math.random() * 1000} className="comment" >
+        <div className="comment" >
             <div className="user_info">
                 <div className="user_name">
                     <p>{name}</p>

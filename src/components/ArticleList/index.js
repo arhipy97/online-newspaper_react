@@ -37,7 +37,7 @@ export default class ArticleList extends Component {
 
     renderItems(arr) {
         return arr.map((item) => {
-            return <Article item={item} />
+            return <Article key={Math.random() * 1000} item={item} />
             });
     }
 
