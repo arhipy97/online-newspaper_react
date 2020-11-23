@@ -42,18 +42,14 @@ export default class ArticleList extends Component {
     }
 
     render() {
-
         const { list } = this.state;
 
-        if (!list) {
-            return <Spinner />;
-        }
+        if (!list) return <Spinner />;
 
         const items = this.renderItems(list);
 
-
         return (
-            <div className="articleList">
+            <div key="articleList" className="articleList">
                 {items}
             </div>
         );

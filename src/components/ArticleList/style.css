@@ -32,11 +32,5 @@
 
 .article__title:hover {
     color: #2ebaae;
+    text-decoration: none;
 }
-
-/* $hover-blue: #2ebaae;
-$letter-gray: #888888;
-$letter-black: #3c3b3b;
-$background-white: #FFFFFF;
-$bakground-milk: #F4F4F4;
-$border-gray: #E2E2E2; */

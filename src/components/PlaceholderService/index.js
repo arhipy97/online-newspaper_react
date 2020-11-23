@@ -19,14 +19,14 @@ export default class PlaceHolderService extends Component{
         return this.cutArray(collection);
     }
 
-    getPosts = async (id) => {
-        const person = await this.getResourse(`people/${id}/`)
-        return this._transformPerson(person)
+    getPost = async (id) => {
+        const post = await this.getResourse(`/posts/${id}`)
+        return post
     }
 
     getComments = async (id) => {
-        const person = await this.getResourse(`people/${id}/`)
-        return this._transformPerson(person)
+        const comments = await this.getResourse(`/posts/${id}/comments`)
+        return comments
     }
 
     cutArray = (array) => {
@@ -34,14 +34,22 @@ export default class PlaceHolderService extends Component{
         return array
     }
 
-    _transformImages = (person) => {
-        console.log(person);
-        // return {
-        //     id: this._extractId(person),
-        //     name: person.name,
-        //     gender: person.gender,
-        //     birthYear: person.birth_year,
-        //     eyeColor: person.eye_color,
-        // }
+    postComment = async ( id, value ) => {
+        let response = await fetch(`${this._apiBase}${`/posts/${id}`}/comments`, {
+            method: 'POST',
+            body: JSON.stringify([
+                {
+                    postId: id,
+                    id: "doesn't matter",
+                    name: "id labore ex et quam laborum",
+                    email: "Eliseo@gardner.biz",
+                    body: value,
+                }
+            ]),
+            headers: {
+                'Content-type': 'application/json; charset=UTF-8',
+            },
+        })
+        return response.json()
     }
 }
