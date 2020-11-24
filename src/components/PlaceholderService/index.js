@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class PlaceHolderService extends Component{
+export default class PlaceHolderService {
     _apiBase='https://jsonplaceholder.typicode.com'
 
     async getResourse(url) {

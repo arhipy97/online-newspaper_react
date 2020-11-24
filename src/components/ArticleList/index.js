@@ -16,8 +16,7 @@ export default class ArticleList extends Component {
         list: null,
     };
 
-    constructor() {
-        super();
+    componentDidMount() {
         this.getList();
     }
 
@@ -50,7 +49,9 @@ export default class ArticleList extends Component {
 
         return (
             <div key="articleList" className="articleList">
-                {items}
+                {
+                list.map((item) =>  <Article key={Math.random() * 1000} item={item} /> )
+                }
             </div>
         );
     }

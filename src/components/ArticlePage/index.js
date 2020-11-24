@@ -5,9 +5,7 @@ import Comments from '../Comments'
 
 import './style.css'
 
-const ArticlePage = (props) => {
-    const { itemId }= props
-
+const ArticlePage = ({ itemId }) => {
     return (
         <div className='article__page'>
             <ArticleBody itemId={itemId}/>
