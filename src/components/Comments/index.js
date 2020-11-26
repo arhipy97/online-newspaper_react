@@ -36,22 +36,15 @@ export default class Comments extends Component {
     }
 
     addItem = async (itemId, commentValue) => {
-
         if (commentValue === null || commentValue === "") {
             return
         }
 
-        const responce = await this.placeholderService.postComment(itemId, commentValue)
+        const responce = await this.placeholderService.postComment(itemId, commentValue, this.state.data.length) //data.length для упоряочивания id
 
         localStorage.putComments(itemId, responce[0])
 
         this.updateItem()
-    }
-
-    renderItems(arr) {
-        return arr.map((item) => {
-            return <View key={Math.random() * 1000} item={item} />
-        });
     }
 
     render() {
@@ -59,19 +52,18 @@ export default class Comments extends Component {
 
         if (!data) return <Spinner />
 
-        const comments = this.renderItems(data)
-
         return (
             <div>
-                {comments}
-                <CommentInput itemId={this.props.itemId} addItem={this.addItem} />
+                {
+                    data.map((item) => <View key={item.id} {...item} />)
+                }
+                <CommentInput itemId={this.props.itemId} addItem={this.addItem}/>
             </div>
         );
     }
 }
 
-const View = (props) => {
-    const { name, body, email } = props.item
+const View = ({ name, body, email } ) => {
     return (
         <div className="comment" >
             <div className="user_info">
@@ -83,7 +75,7 @@ const View = (props) => {
                 </div>
             </div>
             <div className="user_body">
-                <p className="article__subtitle">{body}</p>
+                {body}
             </div>
         </div >
     )

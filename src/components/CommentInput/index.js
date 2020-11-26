@@ -1,48 +1,48 @@
 import "./styles.css"
-import React, { Component } from 'react'
+import React from 'react'
+import { Formik } from 'formik'
 
-import PlaceholderService from '../PlaceholderService'
+const Input = ({ itemId, addItem }) => {
+    return (
+        <Formik
+            initialValues={{
+                comment: '',
+            }}
+            onSubmit={async ({ comment }, actions) => {
+                await addItem(itemId, comment);
 
-export default class CommentInput extends Component {
-
-    placeholderService = new PlaceholderService();
-
-    state = {
-        commentValue: '',
-    }
-
-    onLableChange = (event) => {
-        this.setState({
-            commentValue: event.target.value
-        })
-    }
-
-    onSubmit = async (event) => {
-        event.preventDefault();
-
-        const {itemId, addItem } = this.props
-
-        await addItem(itemId ,this.state.commentValue);
-
-        this.setState({
-            commentValue: '',
-        })
-    }
-
-    render() {
-        return (
-            <form className="commentInput"
-                onSubmit={this.onSubmit}>
-                <input 
-                    type="text"
-                    className="form-control"
-                    onChange={this.onLableChange}
-                    placeholder="Comment"
-                    value={this.state.commentValue}></input>
-                <button className="submitForm">
-                    Add Comment
-                </button>
-            </form>
-        )
-    }
+                actions.resetForm({
+                    values: {
+                        comment: '',
+                    },
+                })
+            }}
+        >
+            {({ values, handleChange, handleSubmit, dirty }) => {
+                return (
+                    <div>
+                        <input
+                            className="form-control"
+                            type="text"
+                            name={"comment"}
+                            onChange={handleChange}
+                            value={values.comment}
+                            placeholder="Comment"
+                            autoComplete="off"
+                        ></input>
+                        <button
+                            className="submitForm"
+                            disabled={!dirty}
+                            onClick={handleSubmit}
+                            type={"submite"}
+                        >
+                            Submit Comment
+                        </button>
+                    </div>
+                )
+            }}
+        </Formik>
+    )
 }
+
+export default Input

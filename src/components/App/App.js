@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 
 import ArticleList from '../ArticleList'
 import ArticlePage from '../ArticlePage'
-import PlaceHolderService from '../PlaceholderService'
-import Spinner from '../Spinner'
+// import PlaceHolderService from '../PlaceholderService'
+// import Spinner from '../Spinner'
 
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
@@ -16,11 +16,11 @@ class App extends Component {
         <div className="App">
           <Switch>
             <Route path="/article/:id"
-              render={({ match, location, history }) => {
+              render={({ match }) => {
                 const { id } = match.params
                 return < ArticlePage itemId={id} />
               }} />
-            <Route path="/" component={ArticleList} exact={true} />
+            <Route path="/" component={ArticleList} exact />
             <Route render = {() => <h2>Page not Found</h2> }/>
           </Switch>
         </div>

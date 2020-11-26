@@ -18,11 +18,6 @@
         }
 
 .user_body{
-    font: 500 normal 15px 'Roboto', sans-serif;
-    letter-spacing: 1px;
-}
-
-.article__subtitle {
     font: 800 normal 18px 'Roboto', sans-serif;
     letter-spacing: 1px;
     color: #888888;

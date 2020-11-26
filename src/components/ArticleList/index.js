@@ -34,23 +34,15 @@ export default class ArticleList extends Component {
         );
     };
 
-    renderItems(arr) {
-        return arr.map((item) => {
-            return <Article key={Math.random() * 1000} item={item} />
-            });
-    }
-
     render() {
         const { list } = this.state;
 
         if (!list) return <Spinner />;
 
-        const items = this.renderItems(list);
-
         return (
             <div key="articleList" className="articleList">
                 {
-                list.map((item) =>  <Article key={Math.random() * 1000} item={item} /> )
+                    list.map((item) =>  <Article key={ item.id } item={ item } /> )
                 }
             </div>
         );

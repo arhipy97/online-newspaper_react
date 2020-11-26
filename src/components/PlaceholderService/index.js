@@ -1,7 +1,7 @@
-import React from 'react'
-
 export default class PlaceHolderService {
-    _apiBase='https://jsonplaceholder.typicode.com'
+    _apiBase='https://jsonplaceholder.typicode.com';
+
+    uniqId=100;
 
     async getResourse(url) {
         const res = await fetch(`${this._apiBase}${url}`);
@@ -34,13 +34,13 @@ export default class PlaceHolderService {
         return array
     }
 
-    postComment = async ( id, value ) => {
-        let response = await fetch(`${this._apiBase}${`/posts/${id}`}/comments`, {
+    postComment = async ( id, value, lastId ) => {
+        const response = await fetch(`${this._apiBase}${`/posts/${id}`}/comments`, {
             method: 'POST',
             body: JSON.stringify([
                 {
                     postId: id,
-                    id: "doesn't matter",
+                    id: lastId++,
                     name: "id labore ex et quam laborum",
                     email: "Eliseo@gardner.biz",
                     body: value,
