@@ -1,50 +1,55 @@
 import React, { Component } from 'react'
-
-import PlaceholderService from '../PlaceholderService'
+import ArticleImage from '../ArticleImage'
 import Spinner from '../Spinner'
-import Article from '../Article'
-
-
+import ErrorIndicator from '../ErrorIndicator'
+import { connect } from 'react-redux'
+import { withPlaceHolderService } from '../hoc'
+import { fetchImages } from '../../actions';
 import './style.css'
+import compose from '../../utils/compose'
 
-
-export default class ArticleList extends Component {
-
-    placeholderService = new PlaceholderService();
-
-    state = {
-        list: null,
-    };
-
-    componentDidMount() {
-        this.getList();
-    }
-
-    getList() {
-        this.placeholderService
-            .getImages()
-            .then(this.onListLoaded);
-    }
-
-    onListLoaded = (list) => {
-        this.setState(
+const ArticleList = ({ list }) => {
+    return (
+        <div key="articleList" className="articleList">
             {
-                list,
-            },
-        );
-    };
+                list.map((item) => <ArticleImage key={item.id} item={item} />)
+            }
+        </div>
+    );
+}
+
+class ArticleListContainer extends Component {
+    
+    componentDidMount() {
+        this.props.fetchImages();
+    }
 
     render() {
-        const { list } = this.state;
+        const { list, loading, error } = this.props;
 
-        if (!list) return <Spinner />;
+        if (loading) {
+            return <Spinner />;
+        }
 
-        return (
-            <div key="articleList" className="articleList">
-                {
-                    list.map((item) =>  <Article key={ item.id } item={ item } /> )
-                }
-            </div>
-        );
+        if (error) {
+            return <ErrorIndicator />;
+        }
+
+        return <ArticleList list={list}/>
     }
 }
+
+const mapStateToProps = ({ articleList: { list, loading, error } }) => {
+    return { list, loading, error };
+}
+
+const mapDispatchToProps = (dispatch, { placeHolderService }) => {
+    return {
+        fetchImages: fetchImages(placeHolderService, dispatch),
+    };
+};
+
+export default compose(
+    withPlaceHolderService(),
+    connect(mapStateToProps, mapDispatchToProps)
+    )(ArticleListContainer)

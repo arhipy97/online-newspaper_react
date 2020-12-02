@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import './style.css'
 
-export default class Article extends Component {
+export default class ArticleImage extends Component {
     render() {
         const { id, title, url } = this.props.item
 
