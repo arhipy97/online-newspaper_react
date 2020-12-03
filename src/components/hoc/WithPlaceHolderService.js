@@ -14,6 +14,6 @@ const withPlaceHolderService = () => (Wrapped) => {
             </PlaceHolderServiceConsumer>
         );
     }
-};
+};  
 
 export default withPlaceHolderService;

@@ -1,5 +1,7 @@
-import withPlaceHolderService from './WithPlaceHolderService';
+import withPlaceHolderService from './withPlaceHolderService';
+import withSpinner  from './withSpinner'
 
 export {
-    withPlaceHolderService
+    withPlaceHolderService,
+    withSpinner,
 };

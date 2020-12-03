@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-
-import Spinner from '../Spinner'
 import ErrorIndicator from '../ErrorIndicator'
 import { connect } from 'react-redux'
-import { withPlaceHolderService } from '../hoc'
+import { withPlaceHolderService, withSpinner } from '../hoc'
 import { fetchPost } from '../../actions';
 import './style.css'
 import compose from '../../utils/compose'
@@ -29,18 +27,14 @@ class ArticleBodyContainer extends Component {
     }
 
     render() {
-        const { post, loading, error } = this.props;
+        const WithSpinnerArticleBody = withSpinner(ArticleBody)
 
-        if (loading) {
-            return <Spinner />;
-        }
-
-        if (error) {
+        if (this.props.error) {
             return <ErrorIndicator />;
         }
 
         return (
-            <ArticleBody post={post} />
+            <WithSpinnerArticleBody props = {this.props}/>
         )
     }
 }

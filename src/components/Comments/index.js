@@ -1,43 +1,16 @@
 import React, { Component } from 'react'
 import CommentInput from '../CommentInput'
-
-import Spinner from '../Spinner'
+import Comment from '../CommentView'
+// import Spinner from '../Spinner'
 import ErrorIndicator from '../ErrorIndicator'
-
 import { connect } from 'react-redux'
-import { withPlaceHolderService } from '../hoc'
+import { withPlaceHolderService, withSpinner } from '../hoc'
 import { fetchComments, addComment } from '../../actions';
 import compose from '../../utils/compose'
 
 import './style.css'
 
-const Comment = ({ comments }) => {
-    return (
-        <div>
-            {
-                comments.map((item) => <View key={item.id} {...item} />)
-            }
-        </div>
-    );
-}
 
-const View = ({ name, body, email }) => {
-    return (
-        <div className="comment" >
-            <div className="user_info">
-                <div className="user_name">
-                    <p>{name}</p>
-                </div>
-                <div className="user_email">
-                    <p>{email}</p>
-                </div>
-            </div>
-            <div className="user_body">
-                {body}
-            </div>
-        </div >
-    )
-}
 
 class CommentsContainer extends Component {
 
@@ -46,15 +19,13 @@ class CommentsContainer extends Component {
     }
 
     render() {
-        const { comments, loading, error, itemId } = this.props;
+        const WithSpinnerComment = withSpinner(Comment)
         let lastIdx = 0
+
+        const { comments, loading, error, itemId } = this.props;
 
         if(comments.length > 0) {
             lastIdx = comments[comments.length - 1].id; //for uniq
-        }
-
-        if (loading) {
-            return <Spinner />;
         }
 
         if (error) {
@@ -63,7 +34,7 @@ class CommentsContainer extends Component {
 
         return (
             <div>
-                <Comment comments={comments} />
+                <WithSpinnerComment props = { this.props } />
                 <CommentInput
                     addItem={(commentValue) => this.props.addComment(commentValue, itemId, lastIdx )}/>
             </div>

@@ -2,7 +2,7 @@ const updateComments = (state, action) => {
 
     if (state === undefined) {
         return {
-            comments: [],
+            comments: [],   // localStorage завязан на длинне массива
             loading: true,
             error: null
         };

@@ -2,7 +2,7 @@ const updateArticleDescription = (state, action) => {
 
     if (state === undefined) {
         return {
-            post: {},
+            ...state,
             loading: true,
             error: null
         }

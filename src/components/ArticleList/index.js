@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 import ArticleImage from '../ArticleImage'
-import Spinner from '../Spinner'
 import ErrorIndicator from '../ErrorIndicator'
 import { connect } from 'react-redux'
-import { withPlaceHolderService } from '../hoc'
+import { withPlaceHolderService, withSpinner } from '../hoc'
 import { fetchImages } from '../../actions';
 import './style.css'
 import compose from '../../utils/compose'
@@ -25,17 +24,13 @@ class ArticleListContainer extends Component {
     }
 
     render() {
-        const { list, loading, error } = this.props;
+        const WithSpinnerArticleList = withSpinner(ArticleList)
 
-        if (loading) {
-            return <Spinner />;
-        }
-
-        if (error) {
+        if (this.props.error) {
             return <ErrorIndicator />;
         }
 
-        return <ArticleList list={list}/>
+        return <WithSpinnerArticleList props = {this.props}/>
     }
 }
 
@@ -51,5 +46,5 @@ const mapDispatchToProps = (dispatch, { placeHolderService }) => {
 
 export default compose(
     withPlaceHolderService(),
-    connect(mapStateToProps, mapDispatchToProps)
-    )(ArticleListContainer)
+    connect(mapStateToProps, mapDispatchToProps),
+)(ArticleListContainer)
