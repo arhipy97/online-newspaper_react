@@ -2,14 +2,14 @@ import "./styles.css"
 import React from 'react'
 import { Formik } from 'formik'
 
-const Input = ({ itemId, addItem }) => {
+const Input = ({ addItem }) => {
     return (
         <Formik
             initialValues={{
                 comment: '',
             }}
             onSubmit={async ({ comment }, actions) => {
-                await addItem(itemId, comment);
+                await addItem( comment );
 
                 actions.resetForm({
                     values: {

@@ -1,83 +1,59 @@
 import React, { Component } from 'react'
-
-import Spinner from '../Spinner'
-import PlaceholderService from '../PlaceholderService'
 import CommentInput from '../CommentInput'
-import localStorage from '../LocalStorage'
+import Comment from '../CommentView'
+// import Spinner from '../Spinner'
+import ErrorIndicator from '../ErrorIndicator'
+import { connect } from 'react-redux'
+import { withPlaceHolderService, withSpinner } from '../hoc'
+import { fetchComments, addComment } from '../../actions';
+import compose from '../../utils/compose'
 
 import './style.css'
 
-export default class Comments extends Component {
 
-    placeholderService = new PlaceholderService();
 
-    state = {
-        data: null,
-    }
+class CommentsContainer extends Component {
 
     componentDidMount() {
-        this.updateItem()
-    }
-
-    updateItem() {
-        const { itemId } = this.props;
-
-        const localComments = localStorage.getComments(itemId)
-
-        this.placeholderService
-            .getComments(itemId)
-            .then((data) => {
-                this.setState(
-                    {
-                        data: [...data, ...localComments],
-                    }
-                )
-            });
-    }
-
-    addItem = async (itemId, commentValue) => {
-        if (commentValue === null || commentValue === "") {
-            return
-        }
-
-        const responce = await this.placeholderService.postComment(itemId, commentValue, this.state.data.length) //data.length для упоряочивания id
-
-        localStorage.putComments(itemId, responce[0])
-
-        this.updateItem()
+        this.props.fetchComments(this.props.itemId);
     }
 
     render() {
-        const { data } = this.state
+        const WithSpinnerComment = withSpinner(Comment)
+        let lastIdx = 0
 
-        if (!data) return <Spinner />
+        const { comments, loading, error, itemId } = this.props;
+
+        if(comments.length > 0) {
+            lastIdx = comments[comments.length - 1].id; //for uniq
+        }
+
+        if (error) {
+            return <ErrorIndicator />;
+        }
 
         return (
             <div>
-                {
-                    data.map((item) => <View key={item.id} {...item} />)
-                }
-                <CommentInput itemId={this.props.itemId} addItem={this.addItem}/>
+                <WithSpinnerComment props = { this.props } />
+                <CommentInput
+                    addItem={(commentValue) => this.props.addComment(commentValue, itemId, lastIdx )}/>
             </div>
         );
     }
 }
 
-const View = ({ name, body, email } ) => {
-    return (
-        <div className="comment" >
-            <div className="user_info">
-                <div className="user_name">
-                    <p>{name}</p>
-                </div>
-                <div className="user_email">
-                    <p>{email}</p>
-                </div>
-            </div>
-            <div className="user_body">
-                {body}
-            </div>
-        </div >
-    )
+const mapStateToProps = ({ comments: { comments, loading, error } }) => {
+    return { comments, loading, error };
 }
 
+const mapDispatchToProps = (dispatch, { placeHolderService }) => {
+    return {
+        fetchComments: fetchComments(placeHolderService, dispatch),
+        addComment: addComment(placeHolderService, dispatch),
+    };
+};
+
+export default compose(
+    withPlaceHolderService(),
+    connect(mapStateToProps, mapDispatchToProps)
+)(CommentsContainer)
